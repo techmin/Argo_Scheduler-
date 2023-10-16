@@ -8,11 +8,11 @@
 		<version>3.1.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.argo.scheduler</groupId>
+	<groupId>com.example</groupId>
 	<artifactId>scheduler</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>scheduler</name>
-	<description>Scheduler using Spring Boot</description>
+	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
