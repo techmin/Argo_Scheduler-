@@ -3,9 +3,10 @@ package com.example.scheduler.info;
 public class TimerInfo {
     private int totalFireCount;
     private boolean runForever;
-    private long repeatIntervalMs;
-    private long initialOffsetMs;
+    private int repeatIntervalS;
+    private long initialOffsetS;
     private String callbackData;
+
 
 
     public int getTotalFireCount() {
@@ -28,20 +29,20 @@ public class TimerInfo {
         this.runForever = runForever;
     }
 
-    public long getRepeatIntervalMs() {
-        return this.repeatIntervalMs;
+    public long getRepeatIntervalS() {
+        return this.repeatIntervalS;
     }
 
-    public void setRepeatIntervalMs(long repeatIntervalMs) {
-        this.repeatIntervalMs = repeatIntervalMs;
+    public void setRepeatIntervalS(int repeatIntervalS) {
+        this.repeatIntervalS = repeatIntervalS;
     }
 
-    public long getInitialOffsetMs() {
-        return this.initialOffsetMs;
+    public long getInitialOffsetS() {
+        return this.initialOffsetS;
     }
 
-    public void setInitialOffsetMs(long initialOffsetMs) {
-        this.initialOffsetMs = initialOffsetMs;
+    public void setInitialOffsetS(long initialOffsetS) {
+        this.initialOffsetS = initialOffsetS;
     }
 
     public String getCallbackData() {
@@ -51,5 +52,6 @@ public class TimerInfo {
     public void setCallbackData(String callbackData) {
         this.callbackData = callbackData;
     }
+    
 
 }
