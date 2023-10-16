@@ -12,7 +12,7 @@ public class JobExecutor implements Job{
     private static final Logger LOG = LoggerFactory.getLogger(JobExecutor.class);
     
     @Override
-    public void execute(JobExecutionContext){
+    public void execute(JobExecutionContext context){
         LOG.info("Job Scheduled");
     }
 }

@@ -29,7 +29,7 @@ public class TimerInfo {
         this.runForever = runForever;
     }
 
-    public long getRepeatIntervalS() {
+    public int getRepeatIntervalS() {
         return this.repeatIntervalS;
     }
 

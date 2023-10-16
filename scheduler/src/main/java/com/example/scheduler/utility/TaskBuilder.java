@@ -8,7 +8,7 @@ import org.quartz.JobDetail;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
-import java.util.Date;
+// import java.util.Date;
 
 
 public final class TaskBuilder {
@@ -26,8 +26,7 @@ public final class TaskBuilder {
 
     public static Trigger trigger(final Class<? extends Job> jobClass, final TimerInfo info){
         SimpleScheduleBuilder builder = SimpleScheduleBuilder.simpleSchedule()
-                                        .withIntervalInSeconds(info.getRepeatIntervalS())
-                                        .repeatForever();
+                                        .withIntervalInSeconds(info.getRepeatIntervalS());
 
         if (info.isRunForever()){
             builder = builder.repeatForever();
