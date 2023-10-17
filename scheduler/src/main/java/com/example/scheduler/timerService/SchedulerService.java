@@ -8,39 +8,41 @@ import org.slf4j.LoggerFactory;
 import org.quartz.Job;
 import org.quartz.Trigger;
 import org.quartz.JobDetail;
-// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-// import com.example.scheduler.jobs.JobExecutor;
 import com.example.scheduler.utility.TaskBuilder;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 
+
+
 @Service
 public class SchedulerService {
+    // log information and exceptions
     private static final Logger LOG = LoggerFactory.getLogger(SchedulerService.class);
+    // instance of scheduler manage and scheduler the jobs
     private final Scheduler scheduler;
 
 
-    // @Autowired
     public SchedulerService(Scheduler scheduler){
         this.scheduler = scheduler;
     }
 
     public void schedule(final Class <? extends Job> jobClass, final TimerInfo info){
+        // utilizing functions from the TaskBuilder class
         final JobDetail jobDetail = TaskBuilder.jobDetail(jobClass, info);
         final Trigger trigger = TaskBuilder.trigger(jobClass, info);
 
         try {
+            // scheduler a job
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
     }
 
-    // Starting the scheduler
+    
     @PostConstruct
+    // Starting the scheduler
     public void initScheduler(){
         try{
             scheduler.start();
@@ -49,6 +51,7 @@ public class SchedulerService {
         }
     }
 
+    // ??
     @PreDestroy
     public void shutdownScheduler(){
         try{
