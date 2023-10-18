@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
+import { Calendar, luxonLocalizer } from 'react-big-calendar';
+import { DateTime} from 'luxon';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import axios from 'axios';
 import './styles.css';
 
 
 // localilizer for using moment for date functionalities
-const localizer = momentLocalizer(moment);
+const localizer = luxonLocalizer(DateTime);
 
 // main class that extends Component to fetch html
 class CalendarComponent extends Component {
