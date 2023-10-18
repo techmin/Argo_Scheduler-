@@ -6,7 +6,6 @@ import axios from 'axios';
 import './styles.css';
 
 
-// localilizer for using moment for date functionalities
 const localizer = luxonLocalizer(DateTime);
 
 // main class that extends Component to fetch html
