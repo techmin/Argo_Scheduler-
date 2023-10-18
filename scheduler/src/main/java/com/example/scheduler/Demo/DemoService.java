@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import com.example.scheduler.info.TimerInfo;
 import com.example.scheduler.jobs.JobExecutor;
 import com.example.scheduler.timerService.SchedulerService;
+import com.example.scheduler.utility.TaskBuilder;
+import org.quartz.CronTrigger;
+
 
 @Service
 // spring service than can be injected into other components
@@ -29,9 +32,23 @@ public class DemoService {
         info.setInitialOffsetS(1);
 
         // used to test if the job is being executed
-        info.setCallbackData("My Callback Data");
+        info.setCallbackData("Scheduling...");
 
         // schedules the jobExecutor job with given info
-        scheduler.schedule(JobExecutor.class, info);
+        // scheduler.schedule(JobExecutor.class, info);
     }
-}
+
+
+    // // new
+    public void runCronJob(){
+
+        final TimerInfo info = new TimerInfo();
+        info.setCronExpression("0 * * * * ?");
+        info.setCallbackData("Executing cron job");
+
+        CronTrigger trigger = (CronTrigger) TaskBuilder.cronTrigger(JobExecutor.class, info);
+        if(trigger != null){
+            scheduler.schedule(JobExecutor.class, info, trigger);
+        }
+    }
+} 

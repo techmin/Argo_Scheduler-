@@ -1,6 +1,9 @@
 package com.example.scheduler.utility;
 
 import com.example.scheduler.info.TimerInfo;
+// import com.example.scheduler.timerService.SchedulerService;
+
+import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
@@ -9,9 +12,13 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 // import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public final class TaskBuilder {
+    private static final Logger LOG = LoggerFactory.getLogger(TaskBuilder.class);
+
     private TaskBuilder() {}
 
     // jobDetail method
@@ -24,8 +31,8 @@ public final class TaskBuilder {
 
         // build and return a new job detail object
         return JobBuilder.newJob(jobClass)
-                        .withIdentity(jobClass.getSimpleName())
-                        .setJobData(jobDataMap)
+                        .withIdentity(jobClass.getSimpleName()) //for now, using default group
+                        .setJobData(jobDataMap) //replace the jobDetail's JobDataMap
                         .build();
     }
 
@@ -46,9 +53,23 @@ public final class TaskBuilder {
         // build and return a new trigger, determines the timing and frequency of the job's
         return TriggerBuilder.newTrigger()
                     .withIdentity(jobClass.getSimpleName())
-                    .withSchedule(builder)
+                    .withSchedule(builder) //will define the Trigger's schedule
                     // .startAt(new Date(System.currentTimeMillis() + info.getInitialOffsetS()))
                     .build();
+    }
+
+    // new
+    public static Trigger cronTrigger(final Class<? extends Job> jobClass, final TimerInfo info){
+        
+        if(info.getCronExpression() == null || info.getCronExpression().trim().isEmpty()){
+            LOG.error("Cron expression must be provided!");
+            return null;
+        }
+        
+        return TriggerBuilder.newTrigger()
+                            .withIdentity(jobClass.getSimpleName())
+                            .withSchedule(CronScheduleBuilder.cronSchedule(info.getCronExpression()))
+                            .build();
     }
 }
 

@@ -1,6 +1,7 @@
 package com.example.scheduler.info;
 
 public class TimerInfo {
+    // find examples in DemoService
     private int totalFireCount;
     private boolean runForever;
     private int repeatIntervalS;
@@ -8,6 +9,16 @@ public class TimerInfo {
     private String callbackData;
 
 
+    private String cronExpression;
+    
+
+    public String getCronExpression() {
+        return this.cronExpression;
+    }
+
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
+    }
 
     public int getTotalFireCount() {
         return this.totalFireCount;
