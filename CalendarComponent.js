@@ -76,7 +76,7 @@ class CalendarComponent extends Component {
       }));
     }
   
-    // Optionally, update the event on your backend.
+    // update the event on your backend.
   }
   
 
@@ -113,7 +113,7 @@ class CalendarComponent extends Component {
       events: events,
       showEventModal: false
     });
-    // Optionally, remove the event from your backend.
+    // remove the event from your backend.
   }
   
   handleEventModalClose = () => {
