@@ -27,10 +27,10 @@ public class SchedulerService {
         this.scheduler = scheduler;
     }
 
-    public void schedule(final Class <? extends Job> jobClass, final TimerInfo info, Trigger trigger){
+    public void schedule(final Class <? extends Job> jobClass, final TimerInfo info){
         // utilizing functions from the TaskBuilder class
         final JobDetail jobDetail = TaskBuilder.jobDetail(jobClass, info);
-        // final Trigger trigger = TaskBuilder.trigger(jobClass, info);
+        final Trigger trigger = TaskBuilder.trigger(jobClass, info);
 
         try {
             // scheduler a job
