@@ -20,7 +20,7 @@ public class JobProperty {
     @Column(name = "task_name")
     private String taskName;
 
-
+    @Column(name = "description")
     private String description;
 
 

@@ -72,5 +72,3 @@ public final class TaskBuilder {
                             .build();
     }
 }
-
-

@@ -1,11 +1,16 @@
 package com.example.scheduler.repositories;
 
-import org.springframework.data.repository.CrudRepository;
+import com.example.scheduler.entities.JobProperty;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.scheduler.entities.JobProperty;
 
 
 @Repository
-public interface JobPropertyRep extends CrudRepository<JobProperty, Long>{
+public interface JobPropertyRep extends JpaRepository<JobProperty, Long>{
+    JobProperty findByJobName(String name);
 }
+
+
+
+
