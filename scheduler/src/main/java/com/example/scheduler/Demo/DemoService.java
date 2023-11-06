@@ -20,31 +20,31 @@ public class DemoService {
         this.scheduler = scheduler;
     }
 
-    public void runJob(){
-        final TimerInfo info = new TimerInfo();
-        // job will run a total 5 times
-        info.setTotalFireCount(5);
+    // public void runJob(){
+    //     final TimerInfo info = new TimerInfo();
+    //     // job will run a total 5 times
+    //     info.setTotalFireCount(5);
 
-        // job will repeat every 2 seconds
-        info.setRepeatIntervalS(2);
+    //     // job will repeat every 2 seconds
+    //     info.setRepeatIntervalS(2);
 
-        // job will start after a delay of 1
-        info.setInitialOffsetS(1);
+    //     // job will start after a delay of 1
+    //     info.setInitialOffsetS(1);
 
-        // used to test if the job is being executed
-        info.setCallbackData("Scheduling...");
+    //     // used to test if the job is being executed
+    //     info.setCallbackData("Scheduling...");
 
-        // schedules the jobExecutor job with given info
-        // scheduler.schedule(JobExecutor.class, info);
-    }
+    //     // schedules the jobExecutor job with given info
+    //     // scheduler.schedule(JobExecutor.class, info);
+    // }
 
 
     // // new
     public void runCronJob(){
 
         final TimerInfo info = new TimerInfo();
-        info.setCronExpression("0 * * * * ?");
-        info.setCallbackData("Executing cron job");
+        info.setCronExpression("0 0/5 * * *");
+        info.setCallbackData("Executing a Task");
 
         CronTrigger trigger = (CronTrigger) TaskBuilder.cronTrigger(JobExecutor.class, info);
         if(trigger != null){

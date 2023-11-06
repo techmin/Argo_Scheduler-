@@ -18,11 +18,11 @@ public class DemoController {
         this.service = service;
     }
 
-    // invoked in response to POST requests to runJob() a method of DemoService
-    @PostMapping("/runjob")
-    public void runJob(){
-        service.runJob();
-    }
+    // // invoked in response to POST requests to runJob() a method of DemoService
+    // @PostMapping("/runjob")
+    // public void runJob(){
+    //     service.runJob();
+    // }
 
     @PostMapping("/runCronJob")
     public void runCronJob(){
