@@ -1,24 +1,24 @@
-package com.example.scheduler.Demo;
+// package com.example.scheduler.Demo;
 
-import org.springframework.stereotype.Service;
+// import org.springframework.stereotype.Service;
 
-import com.example.scheduler.info.TimerInfo;
-import com.example.scheduler.jobs.JobExecutor;
-import com.example.scheduler.timerService.SchedulerService;
-import com.example.scheduler.utility.TaskBuilder;
-import org.quartz.CronTrigger;
+// import com.example.scheduler.info.TimerInfo;
+// import com.example.scheduler.jobs.JobExecutor;
+// import com.example.scheduler.timerService.SchedulerService;
+// import com.example.scheduler.utility.TaskBuilder;
+// import org.quartz.CronTrigger;
 
 
-@Service
-// spring service than can be injected into other components
-public class DemoService {
-    // reference to the scheduler service, will be used to scheduler jobs
-    private final SchedulerService scheduler;
+// @Service
+// // spring service than can be injected into other components
+// public class DemoService {
+//     // reference to the scheduler service, will be used to scheduler jobs
+//     private final SchedulerService scheduler;
 
-    // spring will provide the required bean when creating an instance
-    public DemoService(final SchedulerService scheduler){
-        this.scheduler = scheduler;
-    }
+//     // spring will provide the required bean when creating an instance
+//     public DemoService(final SchedulerService scheduler){
+//         this.scheduler = scheduler;
+//     }
 
     // public void runJob(){
     //     final TimerInfo info = new TimerInfo();
@@ -35,20 +35,20 @@ public class DemoService {
     //     info.setCallbackData("Scheduling...");
 
     //     // schedules the jobExecutor job with given info
-    //     // scheduler.schedule(JobExecutor.class, info);
+    //     scheduler.schedule(JobExecutor.class, info);
     // }
 
 
-    // // new
-    public void runCronJob(){
+    // // // new
+    // public void runCronJob(){
 
-        final TimerInfo info = new TimerInfo();
-        info.setCronExpression("0 0/5 * * *");
-        info.setCallbackData("Executing a Task");
+    //     final TimerInfo info = new TimerInfo();
+    //     info.setCronExpression("0 * * * * ?");
+    //     info.setCallbackData("Executing cron job");
 
-        CronTrigger trigger = (CronTrigger) TaskBuilder.cronTrigger(JobExecutor.class, info);
-        if(trigger != null){
-            scheduler.schedule(JobExecutor.class, info, trigger);
-        }
-    }
-} 
+    //     CronTrigger trigger = (CronTrigger) TaskBuilder.cronTrigger(JobExecutor.class, info);
+    //     if(trigger != null){
+    //         scheduler.schedule(JobExecutor.class, info);
+    //     }
+    // }
+// } 

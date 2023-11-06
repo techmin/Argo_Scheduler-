@@ -36,11 +36,11 @@
 		<dependency>
 			<groupId>com.cronutils</groupId>
 			<artifactId>cron-utils</artifactId>
-			<version>9.0.1</version>
+			<version>9.2.0</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.mysql</groupId>4
+			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>

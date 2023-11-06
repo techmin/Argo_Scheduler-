@@ -9,7 +9,7 @@ import com.cronutils.model.field.value.SpecialChar;
 
 public class CronUtility {
     public static String buildDailyCronExpression(){
-        Cron cron = CronBuilder.cron(CronDefinitionBuilder.instanceDefinitionFor(CronType.QUARTZ))
+        return CronBuilder.cron(CronDefinitionBuilder.instanceDefinitionFor(CronType.QUARTZ))
                         .withYear(always())
                         .withDoM(between(SpecialChar.L, 3))
                         .withMonth(always())
@@ -17,6 +17,6 @@ public class CronUtility {
                         .withHour(always())
                         .withMinute(always())
                         .withSecond(on(0))
-                        .instance();
+                        .instance().asString();
     }
 }
