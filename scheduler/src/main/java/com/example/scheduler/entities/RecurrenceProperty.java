@@ -1,9 +1,5 @@
 package com.example.scheduler.entities;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;

@@ -23,6 +23,8 @@ public class Appointments {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String appTitle;
+
     @NonNull
     private LocalDate startDate;
     private LocalDate endDate;
@@ -42,6 +44,14 @@ public class Appointments {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getAppTitle() {
+        return this.appTitle;
+    }
+
+    public void setAppTitle(String appTitle) {
+        this.appTitle = appTitle;
     }
 
     public LocalDate getStartDate() {
