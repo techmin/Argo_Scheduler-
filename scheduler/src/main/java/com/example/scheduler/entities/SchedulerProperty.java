@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 
@@ -26,9 +27,12 @@ public class SchedulerProperty {
     @JoinColumn(name = "job_id")
     private JobProperty jobProperty;
 
+    @OneToOne
+    @JoinColumn(name = "recurrence_id")
+    private RecurrenceProperty recurrence;
+
 
     private String description;
-
 
 
     public Long getId() {
@@ -71,6 +75,14 @@ public class SchedulerProperty {
         this.jobProperty = jobProperty;
     }
 
+    public RecurrenceProperty getRecurrence() {
+        return this.recurrence;
+    }
+
+    public void setRecurrence(RecurrenceProperty recurrence) {
+        this.recurrence = recurrence;
+    }
+
     public String getDescription() {
         return this.description;
     }
@@ -78,6 +90,5 @@ public class SchedulerProperty {
     public void setDescription(String description) {
         this.description = description;
     }
-   
-    
+
 }

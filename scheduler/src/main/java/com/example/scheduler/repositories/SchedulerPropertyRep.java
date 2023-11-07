@@ -1,10 +1,9 @@
 package com.example.scheduler.repositories;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.scheduler.entities.SchedulerProperty;
 
-@Repository
-public interface SchedulerPropertyRep extends CrudRepository<SchedulerProperty, Long>{
+public interface SchedulerPropertyRep extends JpaRepository<SchedulerProperty, Long>{
+    
 }

@@ -3,8 +3,13 @@ package com.example.scheduler.timerService;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import com.example.scheduler.info.TimerInfo;
+import com.example.scheduler.repositories.AppointmentsRep;
 import com.example.scheduler.repositories.JobPropertyRep;
 import com.example.scheduler.entities.JobProperty;
+import com.example.scheduler.entities.Appointments;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +30,13 @@ public class SchedulerService {
     private static final Logger LOG = LoggerFactory.getLogger(SchedulerService.class);
     private final Scheduler scheduler;
     private JobPropertyRep jobRepository;
+    // private AppointmentsRep appRepository;
 
     @Autowired
     public SchedulerService(Scheduler scheduler, JobPropertyRep jobRepository){
         this.scheduler = scheduler;
         this.jobRepository = jobRepository;
+        // this.appRepository = appRepository;
     }
     
 
@@ -66,28 +73,30 @@ public class SchedulerService {
         return jobRepository.save(existingJob);
     }
 
+    // public Iterable<Appointments> createAppointments(LocalDate startDate){
+    //     Iterable<Appointments> newAppointment = new ArrayList<>();
 
-    public SchedulerService(Scheduler scheduler){
-        this.scheduler = scheduler;
-    }
-
-    
-
-
-
-
-    // public void schedule(final Class <? extends Job> jobClass, final TimerInfo info){
-    //     // utilizing functions from the TaskBuilder class
-    //     final JobDetail jobDetail = TaskBuilder.jobDetail(jobClass, info);
-    //     final Trigger trigger = TaskBuilder.trigger(jobClass, info);
-
-    //     try {
-    //         // scheduler a job
-    //         scheduler.scheduleJob(jobDetail, trigger);
-    //     } catch (Exception e) {
-    //         LOG.error(e.getMessage(), e);
-    //     }
+    //     return newAppointment;
     // }
+
+
+
+    public void schedule(Long id, LocalDate startTime){
+
+        // final JobDetail jobDetail = TaskBuilder.jobDetail(jobClass, info);
+        // final Trigger trigger = TaskBuilder.trigger(jobClass, info);
+
+        try {
+            // scheduler a job
+            // scheduler.scheduleJob(jobDetail, trigger);
+            // getJobById(id);
+        
+
+            
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
 
     
     @PostConstruct
