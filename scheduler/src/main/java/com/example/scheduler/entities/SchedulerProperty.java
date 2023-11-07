@@ -27,9 +27,9 @@ public class SchedulerProperty {
     @JoinColumn(name = "job_id")
     private JobProperty jobProperty;
 
-    @OneToOne
-    @JoinColumn(name = "recurrence_id")
-    private RecurrenceProperty recurrence;
+    // @OneToOne
+    // @JoinColumn(name = "recurrence_id")
+    // private RecurrenceProperty recurrence;
 
 
     private String description;
@@ -75,13 +75,13 @@ public class SchedulerProperty {
         this.jobProperty = jobProperty;
     }
 
-    public RecurrenceProperty getRecurrence() {
-        return this.recurrence;
-    }
+    // public RecurrenceProperty getRecurrence() {
+    //     return this.recurrence;
+    // }
 
-    public void setRecurrence(RecurrenceProperty recurrence) {
-        this.recurrence = recurrence;
-    }
+    // public void setRecurrence(RecurrenceProperty recurrence) {
+    //     this.recurrence = recurrence;
+    // }
 
     public String getDescription() {
         return this.description;

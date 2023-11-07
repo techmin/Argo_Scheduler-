@@ -3,13 +3,16 @@ package com.example.scheduler.timerService;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import com.example.scheduler.info.TimerInfo;
-import com.example.scheduler.repositories.AppointmentsRep;
+// import com.example.scheduler.repositories.AppointmentsRep;
 import com.example.scheduler.repositories.JobPropertyRep;
+import com.example.scheduler.repositories.SchedulerPropertyRep;
 import com.example.scheduler.entities.JobProperty;
-import com.example.scheduler.entities.Appointments;
+// import com.example.scheduler.entities.Appointments;
+import com.example.scheduler.entities.SchedulerProperty;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +33,14 @@ public class SchedulerService {
     private static final Logger LOG = LoggerFactory.getLogger(SchedulerService.class);
     private final Scheduler scheduler;
     private JobPropertyRep jobRepository;
+    SchedulerPropertyRep scheduleRepository;
     // private AppointmentsRep appRepository;
 
     @Autowired
-    public SchedulerService(Scheduler scheduler, JobPropertyRep jobRepository){
+    public SchedulerService(Scheduler scheduler, JobPropertyRep jobRepository, SchedulerPropertyRep scheduleRepository){
         this.scheduler = scheduler;
         this.jobRepository = jobRepository;
+        this.scheduleRepository = scheduleRepository;
         // this.appRepository = appRepository;
     }
     
@@ -48,7 +53,7 @@ public class SchedulerService {
         return jobRepository.saveAll(jobProperties);
     }
 
-    public Iterable<JobProperty> getJobs(){
+    public List<JobProperty> getJobs(){
         return jobRepository.findAll();
     }
 
@@ -73,6 +78,7 @@ public class SchedulerService {
         return jobRepository.save(existingJob);
     }
 
+
     // public Iterable<Appointments> createAppointments(LocalDate startDate){
     //     Iterable<Appointments> newAppointment = new ArrayList<>();
 
@@ -81,7 +87,7 @@ public class SchedulerService {
 
 
 
-    public void schedule(Long id, LocalDate startTime){
+    public void CreateSchedule(Long id, LocalDate startTime){
 
         // final JobDetail jobDetail = TaskBuilder.jobDetail(jobClass, info);
         // final Trigger trigger = TaskBuilder.trigger(jobClass, info);
@@ -89,13 +95,24 @@ public class SchedulerService {
         try {
             // scheduler a job
             // scheduler.scheduleJob(jobDetail, trigger);
-            // getJobById(id);
+            List<JobProperty> jobs = getJobs();
+
+            for (JobProperty job: jobs){
+                List<SchedulerProperty> schedulerProperties = job.getSchedulerProperties();
+                for (SchedulerProperty schedulerProperty : schedulerProperties){
+                    getSchedule(job, schedulerProperty);
+                }
+            }
         
 
             
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
+    }
+
+    private void getSchedule(JobProperty job, SchedulerProperty schedulerProperty){
+
     }
 
     
