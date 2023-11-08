@@ -11,6 +11,7 @@ import com.example.scheduler.entities.JobProperty;
 import com.example.scheduler.entities.SchedulerProperty;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +88,7 @@ public class SchedulerService {
 
 
 
-    public void CreateSchedule(Long id, LocalDate startTime){
+    public void buildSchedule(Long id, LocalDate startTime){
 
         // final JobDetail jobDetail = TaskBuilder.jobDetail(jobClass, info);
         // final Trigger trigger = TaskBuilder.trigger(jobClass, info);
@@ -95,14 +96,16 @@ public class SchedulerService {
         try {
             // scheduler a job
             // scheduler.scheduleJob(jobDetail, trigger);
-            List<JobProperty> jobs = getJobs();
+            // List<JobProperty> jobs = getJobs();
 
-            for (JobProperty job: jobs){
-                List<SchedulerProperty> schedulerProperties = job.getSchedulerProperties();
-                for (SchedulerProperty schedulerProperty : schedulerProperties){
-                    getSchedule(job, schedulerProperty);
-                }
-            }
+            // for (JobProperty job: jobs){
+            //     List<SchedulerProperty> schedulerProperties = job.getSchedulerProperties();
+            //     for (SchedulerProperty schedulerProperty : schedulerProperties){
+            //         getSchedule(job, schedulerProperty);
+            //     }
+            // }
+            // List<LocalDateTime> schedule = new ArrayList<>();
+            // Integer frequency = 
         
 
             
