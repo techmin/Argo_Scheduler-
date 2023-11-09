@@ -33,9 +33,9 @@ public class Appointments {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    // @ManyToOne
-    // @JoinColumn(name = "recurrence_id")
-    // private RecurrenceProperty recurrence;
+    @ManyToOne
+    @JoinColumn(name = "recurrence_id")
+    private RecurrenceProperty recurrence;
 
 
     public Long getId() {
@@ -86,12 +86,12 @@ public class Appointments {
         this.endTime = endTime;
     }
 
-    // public RecurrenceProperty getRecurrence() {
-    //     return this.recurrence;
-    // }
+    public RecurrenceProperty getRecurrence() {
+        return this.recurrence;
+    }
 
-    // public void setRecurrence(RecurrenceProperty recurrence) {
-    //     this.recurrence = recurrence;
-    // }
+    public void setRecurrence(RecurrenceProperty recurrence) {
+        this.recurrence = recurrence;
+    }
 
 }

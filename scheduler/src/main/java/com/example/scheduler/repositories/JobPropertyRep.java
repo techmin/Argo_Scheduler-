@@ -2,9 +2,11 @@ package com.example.scheduler.repositories;
 
 import com.example.scheduler.entities.JobProperty;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 
@@ -12,9 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface JobPropertyRep extends JpaRepository<JobProperty, Long>{
     JobProperty findByJobName(String name);
-    // Optional<JobProperty> findById(Long id);
+    
+    @Query("SELECT jp FROM JobProperty jp JOIN jp.schedulerProperties sp WHERE sp.date BETWEEN :startDate AND :endDate")
+    List<JobProperty> findBySchedulerPropertiesScheduledDateBetween(LocalDate startDate, LocalDate endDate);
 }
-
-
-
-

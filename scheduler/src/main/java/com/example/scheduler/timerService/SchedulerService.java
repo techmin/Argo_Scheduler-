@@ -3,7 +3,7 @@ package com.example.scheduler.timerService;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import com.example.scheduler.info.TimerInfo;
-// import com.example.scheduler.repositories.AppointmentsRep;
+import com.example.scheduler.repositories.AppointmentsRep;
 import com.example.scheduler.repositories.JobPropertyRep;
 import com.example.scheduler.repositories.SchedulerPropertyRep;
 import com.cronutils.model.Cron;
@@ -11,17 +11,23 @@ import com.cronutils.model.definition.CronNicknames;
 import com.cronutils.parser.CronParser;
 import com.example.scheduler.entities.JobProperty;
 import com.example.scheduler.entities.RecurrenceProperty;
-// import com.example.scheduler.entities.Appointments;
+import com.example.scheduler.entities.Appointments;
 import com.example.scheduler.entities.SchedulerProperty;
 
 import java.util.Date;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
@@ -45,14 +51,14 @@ public class SchedulerService {
     private final Scheduler scheduler;
     private JobPropertyRep jobRepository;
     SchedulerPropertyRep scheduleRepository;
-    // private AppointmentsRep appRepository;
+    private AppointmentsRep appRepository;
 
     @Autowired
     public SchedulerService(Scheduler scheduler, JobPropertyRep jobRepository, SchedulerPropertyRep scheduleRepository){
         this.scheduler = scheduler;
         this.jobRepository = jobRepository;
         this.scheduleRepository = scheduleRepository;
-        // this.appRepository = appRepository;
+        this.appRepository = appRepository;
     }
     
 
@@ -76,6 +82,7 @@ public class SchedulerService {
         return jobRepository.findByJobName(name);
     }
 
+
     public String deleteJob(Long id){
         jobRepository.deleteById(id);
         return "Job + " + id + " deleted!";
@@ -88,8 +95,6 @@ public class SchedulerService {
         existingJob.setDescription(jobProperty.getDescription());
         return jobRepository.save(existingJob);
     }
-
-
 
     public List<LocalDateTime> buildSchedule(Long id, LocalDate startTime){
 
@@ -128,20 +133,36 @@ public class SchedulerService {
                                 break;
                             }
                         }
-                    int rem = index % frequency;
-                    filteredSchedule = IntStream.range(rem, schedule.size())
+                    if(index != -1){
+                        int rem = index % frequency;
+                        filteredSchedule = IntStream.range(rem, schedule.size())
                                                 .filter(n -> n % frequency == rem)
                                                 .mapToObj(schedule::get) 
-                                                .toList();                       
+                                                .collect(Collectors.toList());     
+                    }
+                    break;                  
                         
                         
                     case WEEKLY:
+                        if(!schedule.isEmpty()){
+                            int rem = start.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()) % frequency;
+                            filteredSchedule = schedule.stream()
+                                                    .filter(s -> (s.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()) % frequency) == rem)
+                                                    .collect(Collectors.toList());
+                        }
                         break;
 
                     case MONTHLY:
+                        if(!schedule.isEmpty()){
+                            int rem = start.getMonthValue() % frequency;
+                            filteredSchedule = schedule.stream()
+                                                    .filter(s -> (s.getMonthValue() % frequency) == rem)
+                                                    .collect(Collectors.toList());
+                        }
                         break;
                 
                     default:
+                        filteredSchedule = Collections.emptyList();
                         break;
                     }
                 }
@@ -176,11 +197,23 @@ public class SchedulerService {
     }
 
 
-      // public Iterable<Appointments> createAppointments(LocalDate startDate){
-    //     Iterable<Appointments> newAppointment = new ArrayList<>();
-
-    //     return newAppointment;
-    // }
+    public List<Appointments> createAppointments(LocalDate startDate){
+        LocalDate endDate = startDate.plusWeeks(5);
+        List<JobProperty> jobs = jobRepository.findBySchedulerPropertiesScheduledDateBetween(startDate, endDate);
+        List<Appointments> newAppointments = new ArrayList<>();
+        for(JobProperty job : jobs){
+            List<LocalDateTime> appointmentDates = buildSchedule(job.getJob_id(), startDate);
+            for (LocalDateTime appointmentDate : appointmentDates){
+                Appointments newAppointmentEntry = new Appointments();
+                newAppointmentEntry.setId(job.getJob_id());
+                newAppointmentEntry.setStartDate(appointmentDate.toLocalDate());
+                newAppointmentEntry.setStartTime(appointmentDate.toLocalTime());
+                newAppointmentEntry.setAppTitle(job.getJobName());
+                newAppointments.add(newAppointmentEntry);
+            }
+        }
+        return newAppointments;
+    }
 
 
     
