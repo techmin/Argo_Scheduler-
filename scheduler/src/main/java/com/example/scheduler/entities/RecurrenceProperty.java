@@ -1,5 +1,6 @@
 package com.example.scheduler.entities;
 
+import com.cronutils.model.field.value.SpecialChar;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -37,6 +38,10 @@ public class RecurrenceProperty {
 
     private int dayOfMonth;
     private String weekOfMonth;
+
+    //if recurrence is every day, assign this char as *
+    char dayFreq;
+    private SpecialChar freq;
 
 
 
@@ -87,6 +92,26 @@ public class RecurrenceProperty {
     public void setWeekOfMonth(String weekOfMonth) {
         this.weekOfMonth = weekOfMonth;
     }
-    
+
+    public SpecialChar getFreq()
+    {
+        return this.freq;
+    }
+
+    public void setFreq(SpecialChar freq)
+    {
+        this.freq = freq;
+    }
+
+
+    public char getDayFreq(){
+        return this.dayFreq;
+
+    }
+
+    public void setDayFreq(char dayFreq)
+    {
+        this.dayFreq = dayFreq;
+    }
 }
 
