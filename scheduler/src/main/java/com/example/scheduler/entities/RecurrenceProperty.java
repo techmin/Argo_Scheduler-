@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "recurrence_properties")
 public class RecurrenceProperty {
-    public enum Frequency{
+    public enum Repeat{
         DAILY, WEEKLY, MONTHLY, YEARLY;
     }
 
@@ -25,9 +25,11 @@ public class RecurrenceProperty {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Frequency frequency;
-    
+    private Repeat repeatTask;
     private int intervalAmount;
+
+    private int frequency;
+
 
 
     // @ElementCollection(targetClass = daysOfWeek.class)
@@ -48,21 +50,32 @@ public class RecurrenceProperty {
         this.id = id;
     }
 
-    public Frequency getFrequency() {
-        return this.frequency;
+
+    public Repeat getRepeat() {
+        return this.repeatTask;
     }
 
-    public void setFrequency(Frequency frequency) {
-        this.frequency = frequency;
+    public void setRepeat(Repeat repeat) {
+        this.repeatTask = repeat;
     }
 
-    public int getInterval() {
+    public int getIntervalAmount() {
         return this.intervalAmount;
     }
 
-    public void setInterval(int interval) {
-        this.intervalAmount = interval;
+    public void setIntervalAmount(int intervalAmount) {
+        this.intervalAmount = intervalAmount;
     }
+
+
+    public int getFrequency() {
+        return this.frequency;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+
 
     public List<daysOfWeek> getDaysOfWeek() {
         return this.daysOfWeek;

@@ -30,7 +30,7 @@ public class JobProperty {
     private String description;
 
 
-    @OneToMany(mappedBy = "jobProperty", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "jobProperty", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     public List<SchedulerProperty> schedulerProperties = new ArrayList<>();
 
 
