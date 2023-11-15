@@ -23,16 +23,17 @@ public class JobProperty {
     @Column(name = "job_name")
     private String jobName;
 
-    @Column(name = "task_name")
-    private String taskName;
+    // put class name of the job
+    @Column(name = "taskName")
+    private String taskClass; 
 
     @Column(name = "description")
     private String description;
 
+    private String cronExpression;
 
     @OneToMany(mappedBy = "jobProperty", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     public List<SchedulerProperty> schedulerProperties = new ArrayList<>();
-
 
 
     public Long getJob_id() {
@@ -51,12 +52,12 @@ public class JobProperty {
         this.jobName = jobName;
     }
 
-    public String getTaskName() {
-        return this.taskName;
+    public String getTaskClass() {
+        return this.taskClass;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
+    public void setTaskClass(String taskClass) {
+        this.taskClass = taskClass;
     }
 
     public String getDescription() {
@@ -65,6 +66,14 @@ public class JobProperty {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCronExpression() {
+        return this.cronExpression;
+    }
+
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
     }
 
     public List<SchedulerProperty> getSchedulerProperties() {

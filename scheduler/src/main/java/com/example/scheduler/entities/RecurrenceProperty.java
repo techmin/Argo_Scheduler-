@@ -1,7 +1,6 @@
 package com.example.scheduler.entities;
 
 import jakarta.persistence.CollectionTable;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,8 +36,8 @@ public class RecurrenceProperty {
     private List<daysOfWeek> daysOfWeek;
 
 
-    private int dayOfMonth;
-    private String weekOfMonth;
+    // private int dayOfMonth;
+    // private String weekOfMonth;
 
 
 
@@ -85,21 +84,21 @@ public class RecurrenceProperty {
         this.daysOfWeek = daysOfWeek;
     }
 
-    public int getDayOfMonth() {
-        return this.dayOfMonth;
-    }
+    // public int getDayOfMonth() {
+    //     return this.dayOfMonth;
+    // }
 
-    public void setDayOfMonth(int dayOfMonth) {
-        this.dayOfMonth = dayOfMonth;
-    }
+    // public void setDayOfMonth(int dayOfMonth) {
+    //     this.dayOfMonth = dayOfMonth;
+    // }
 
-    public String getWeekOfMonth() {
-        return this.weekOfMonth;
-    }
+    // public String getWeekOfMonth() {
+    //     return this.weekOfMonth;
+    // }
 
-    public void setWeekOfMonth(String weekOfMonth) {
-        this.weekOfMonth = weekOfMonth;
-    }
+    // public void setWeekOfMonth(String weekOfMonth) {
+    //     this.weekOfMonth = weekOfMonth;
+    // }
     
 }
 

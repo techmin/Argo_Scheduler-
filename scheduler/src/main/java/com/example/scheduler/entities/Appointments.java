@@ -9,7 +9,11 @@ import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import org.hibernate.engine.internal.Cascade;
+
 import io.micrometer.common.lang.NonNull;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -22,7 +26,8 @@ public class Appointments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    @Column(name = "title")
     private String appTitle;
 
     @NonNull
@@ -33,10 +38,13 @@ public class Appointments {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    @ManyToOne
-    @JoinColumn(name = "recurrence_id")
-    private RecurrenceProperty recurrence;
+    // @ManyToOne(cascade = CascadeType.ALL)
+    // @JoinColumn(name = "recurrence_id")
+    // private RecurrenceProperty recurrence;
 
+    // @ManyToOne
+    // @JoinColumn(name = "job_id")
+    // private JobProperty jobProperty;
 
     public Long getId() {
         return this.id;
@@ -86,12 +94,19 @@ public class Appointments {
         this.endTime = endTime;
     }
 
-    public RecurrenceProperty getRecurrence() {
-        return this.recurrence;
-    }
+    // public RecurrenceProperty getRecurrence() {
+    //     return this.recurrence;
+    // }
 
-    public void setRecurrence(RecurrenceProperty recurrence) {
-        this.recurrence = recurrence;
-    }
+    // public void setRecurrence(RecurrenceProperty recurrence) {
+    //     this.recurrence = recurrence;
+    // }
 
+    // public JobProperty getJobProperty() {
+    //     return this.jobProperty;
+    // }
+
+    // public void setJobProperty(JobProperty jobProperty) {
+    //     this.jobProperty = jobProperty;
+    // }
 }
