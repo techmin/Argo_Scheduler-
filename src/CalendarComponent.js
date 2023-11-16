@@ -42,20 +42,20 @@ class CalendarComponent extends Component {
   }   
 
   handleDateClick = (arg) => {
-    // Extract the date and time from the clicked argument
-    const date = arg.date;
-    const dateStr = arg.dateStr; // Contains both date and time if available
-    const allDay = arg.allDay; // Boolean indicating if the click was on an all-day slot
+    // Format the date and time based on the clicked slot
+    const dateClicked = arg.date;
+    const hasTime = arg.view.type.includes('timeGrid');
   
-    // If it's an all-day slot, we don't set the time, otherwise, we extract the time
-    const startDate = allDay ? date.toISOString().substring(0, 10) : dateStr; // 'YYYY-MM-DD'
-    const startTime = allDay ? '' : date.toISOString().substring(11, 16); // 'HH:MM'
+    // Convert to local date-time string and extract the date and time parts
+    const localDateTime = new Date(dateClicked - (dateClicked.getTimezoneOffset() * 60000)).toISOString().split('T');
+    const startDate = localDateTime[0]; // 'YYYY-MM-DD'
+    const startTime = hasTime ? localDateTime[1].substring(0, 5) : ''; // 'HH:MM' if time is included, else empty
   
     this.setState({ 
       showModal: true, 
       eventStartDate: startDate,
-      eventStartTime: startTime, // Will be an empty string if it's an all-day slot
-      selectedDate: date 
+      eventStartTime: startTime, // Set the time only if the current view includes time slots
+      selectedDate: dateClicked 
     });
   }
 
