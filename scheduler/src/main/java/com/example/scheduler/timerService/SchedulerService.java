@@ -131,6 +131,9 @@ public class SchedulerService {
     }
 
     public void scheduleAppointment(Appointments data) throws SchedulerException{
+        LocalDateTime startDateTime = LocalDateTime.of(data.getStartDate(), data.getStartTime());
+        Date start = Date.from(startDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
         JobDetail jobDetail = JobBuilder.newJob(AppointmentJob.class)
                                         .withIdentity(data.getAppTitle(), "appointments")
                                         .usingJobData("appointmentId", data.getId())
@@ -138,6 +141,7 @@ public class SchedulerService {
 
         Trigger trigger = TriggerBuilder.newTrigger()
                                         .withIdentity(data.getAppTitle() + "Trigger")
+                                        .startAt(start)
                                         .build();
 
         scheduler.scheduleJob(jobDetail, trigger);
