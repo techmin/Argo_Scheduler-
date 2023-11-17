@@ -1,5 +1,7 @@
 package com.example.scheduler.utility;
 
+import com.example.scheduler.entities.JobProperty;
+import com.example.scheduler.entities.SchedulerProperty;
 import com.example.scheduler.info.TimerInfo;
 // import com.example.scheduler.timerService.SchedulerService;
 
@@ -59,18 +61,15 @@ public final class TaskBuilder {
     }
 
     // new
-    public static Trigger cronTrigger(final Class<? extends Job> jobClass, final TimerInfo info){
+    public static Trigger cronTrigger(SchedulerProperty schedulerProperty, JobProperty jobProperty){
         
-        if(info.getCronExpression() == null || info.getCronExpression().trim().isEmpty()){
+        if(schedulerProperty.getCronExpression() == null || schedulerProperty.getCronExpression().trim().isEmpty()){
             LOG.error("Cron expression must be provided!");
             return null;
         }
         
         return TriggerBuilder.newTrigger()
-                            .withIdentity(jobClass.getSimpleName())
-                            .withSchedule(CronScheduleBuilder.cronSchedule(info.getCronExpression()))
+                            .withSchedule(CronScheduleBuilder.cronSchedule(schedulerProperty.getCronExpression()))
                             .build();
     }
 }
-
-
