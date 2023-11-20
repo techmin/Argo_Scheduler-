@@ -77,5 +77,4 @@ public class JobController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Job class not found!");
         }
     }
-    
 }

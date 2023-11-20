@@ -39,15 +39,15 @@ public class AppointmentController {
         }
     }
 
-    // @PostMapping("/create")
-    // public List<Appointments> createAppointments(@RequestBody Appointments app){
-    //     return service.createAppointments(app);
-    // }
+    @PostMapping("/add")
+    public Appointments addAppointment(@RequestBody Appointments app){
+        return service.saveAppointment(app);
+    }
 
-    // @GetMapping("/list")
-    // public List<Appointments> findAllAppointments(){
-    //     return service.getAllAppointments();
-    // }
+    @GetMapping("/list")
+    public List<Appointments> findAllAppointments(){
+        return service.getApp();
+    }
 
 
 }

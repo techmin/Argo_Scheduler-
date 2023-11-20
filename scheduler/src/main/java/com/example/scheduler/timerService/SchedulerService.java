@@ -94,7 +94,7 @@ public class SchedulerService {
 
     public String deleteJob(Long id){
         jobRepository.deleteById(id);
-        return "Job id: " + id + " deleted!";
+        return "Job id #" + id + " deleted!";
     }
 
     public JobProperty updateJob(Long id, JobProperty jobProperty){
@@ -145,6 +145,36 @@ public class SchedulerService {
                                         .build();
 
         scheduler.scheduleJob(jobDetail, trigger);
+
+        List<Appointments> newAppointments = new ArrayList<>();
+        LocalDate currentDate = data.getStartDate();
+        LocalDate enforceEndDate = (data.getEndDate() == null) ? startDateTime.plusDays(1).toLocalDate() : data.getEndDate();
+
+        while (currentDate.isBefore(enforceEndDate)) {
+            Appointments newAppointmentDTO = new Appointments();
+            newAppointmentDTO.setAppTitle(data.getAppTitle());
+            newAppointmentDTO.setStartDate(currentDate);
+            newAppointmentDTO.setStartTime(data.getStartTime());
+            newAppointmentDTO.setEndTime(data.getEndTime());
+            // newAppointmentDTO.setRecurrence(recurrence);
+
+            newAppointments.add(newAppointmentDTO);
+            currentDate = currentDate.plusDays(1);
+        }
+
+        saveAllAppointments(newAppointments);
+    }
+
+    public Iterable<Appointments> saveAllAppointments(Iterable<Appointments> app){
+        return appRepository.saveAll(app);
+    }
+
+    public Appointments saveAppointment(Appointments app){
+        return appRepository.save(app);
+    }
+
+    public List<Appointments> getApp(){
+        return appRepository.findAll();
     }
 
 
@@ -264,9 +294,7 @@ public class SchedulerService {
     //     return appRepository.save(app);
     // }
 
-    // public Iterable<Appointments> saveAllAppointments(Iterable<Appointments> app){
-    //     return appRepository.saveAll(app);
-    // }
+    
 
     // public List<Appointments> getAllAppointments(){
     //     return appRepository.findAll();
