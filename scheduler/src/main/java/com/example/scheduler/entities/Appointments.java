@@ -33,6 +33,7 @@ public class Appointments {
     private LocalTime startTime;
     private LocalTime endTime;
 
+    Integer dom;
     @ManyToOne
     @JoinColumn(name = "recurrence_id")
     private RecurrenceProperty recurrence;
@@ -94,6 +95,12 @@ public class Appointments {
         this.recurrence = recurrence;
     }
 
+    public void setDOM(Integer dom)
+    {
+        this.dom = dom;
+    }
 
-
+    public Integer getDom() {
+        return dom;
+    }
 }

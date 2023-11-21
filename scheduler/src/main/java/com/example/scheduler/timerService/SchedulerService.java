@@ -3,6 +3,7 @@ package com.example.scheduler.timerService;
 import com.cronutils.model.field.value.IntegerFieldValue;
 import com.example.scheduler.entities.RecurrenceProperty;
 import com.example.scheduler.entities.SchedulerProperty;
+import org.apache.commons.logging.Log;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import com.example.scheduler.info.TimerInfo;
@@ -21,6 +22,7 @@ import org.quartz.Job;
 import org.quartz.Trigger;
 import org.quartz.JobDetail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import com.example.scheduler.utility.TaskBuilder;
 import jakarta.annotation.PostConstruct;
@@ -350,5 +352,67 @@ public class SchedulerService {
         }
 
         return appt;
+    }
+/*
+    public List<LocalDateTime> getSchedule(Integer id, LocalDate startOn)
+    {
+        List<LocalDateTime> schedule = new ArrayList<>();
+
+        try{
+            Appointments appt = Appointments.getId(id);
+        }
+    }
+*/
+
+
+    private void createSchedule(List<LocalDateTime> schedule, Cron crons, LocalDateTime schedStart, LocalDateTime endOn, Appointments appt ) throws ParseException
+    {
+        CronExpression cronExpression = new CronExpression(crons.asString());
+
+        Date next = null;
+
+        while(schedStart.isBefore(endOn))
+        {
+            if(appt.getRecurrence().getDayOfMonth() != 0 &&(appt.getDom() == 30 || appt.getDom() == 29) &&(((next == nulll) && schedStart.getMonthValue() ==2 ) || ((next != null && schedStart.getMonthValue() ==1)) ))
+            {
+                LocalDateTime febOccurance;
+
+                if(schedStart.getMonthValue() ==2)
+                {
+                    next = cronExpression.getNextValidTimeAfter(java.sql.Date.from(schedStart.atZone(ZoneId.systemDefault()).toInstant()));
+
+                    if(next == null || (next.after(java.sql.Date.from(endOn.atZone(ZoneId.systemDefault()).toInstant())))){
+                        break;
+                    }
+
+                    febOccurance = schedStart.withDayOfMonth((schedStart.getMonth().length(schedStart.toLocalDate().isLeapYear())));
+
+
+                }
+                else {
+                    febOccurance = schedStart.plusMonths(1);
+                    febOccurance = febOccurance.withDayOfMonth(febOccurance.getMonth().length(febOccurance.toLocalDate().isLeapYear()));
+
+                    schedStart = febOccurance;
+                }
+
+                schedule.add(febOccurance);
+            }
+            else {
+                next = cronExpression.getNextValidTimeAfter(java.sql.Date.from(schedStart.atZone((ZoneId.systemDefault())).toInstant()));
+
+                if(next == null || (next.after(java.sql.Date.from(endOn.atZone(ZoneId.systemDefault()).toInstant() ) ) ) )
+                {
+                    break;
+                }
+
+                log.info("next: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(next));
+
+                schedStart = LocalDateTime.of((next.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), appt.getStartTime().toLocalTime());
+
+
+                schedule.add(schedStart);
+            }
+        }
     }
 }
