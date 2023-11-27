@@ -9,12 +9,12 @@ import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import org.hibernate.engine.internal.Cascade;
-
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 
 
@@ -23,6 +23,10 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "appointments")
 public class Appointments {
+    public enum AppointmentStatus {
+        SCHEDULED, WAITING;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,13 +42,14 @@ public class Appointments {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    // @ManyToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "recurrence_id")
-    // private RecurrenceProperty recurrence;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "recurrence_id")
+    private RecurrenceProperty recurrence;
 
-    // @ManyToOne
-    // @JoinColumn(name = "job_id")
-    // private JobProperty jobProperty;
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus status;
+
+
 
     public Long getId() {
         return this.id;
@@ -94,13 +99,22 @@ public class Appointments {
         this.endTime = endTime;
     }
 
-    // public RecurrenceProperty getRecurrence() {
-    //     return this.recurrence;
-    // }
+    public RecurrenceProperty getRecurrence() {
+        return this.recurrence;
+    }
 
-    // public void setRecurrence(RecurrenceProperty recurrence) {
-    //     this.recurrence = recurrence;
-    // }
+    public void setRecurrence(RecurrenceProperty recurrence) {
+        this.recurrence = recurrence;
+    }
+
+
+    public AppointmentStatus getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(AppointmentStatus status) {
+        this.status = status;
+    }
 
     // public JobProperty getJobProperty() {
     //     return this.jobProperty;

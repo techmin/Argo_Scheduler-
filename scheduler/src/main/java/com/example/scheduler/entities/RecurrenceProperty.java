@@ -1,7 +1,11 @@
 package com.example.scheduler.entities;
 
 import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "recurrence_properties")
 public class RecurrenceProperty {
+
     public enum Repeat{
         DAILY, WEEKLY, MONTHLY, YEARLY;
     }
@@ -31,7 +36,7 @@ public class RecurrenceProperty {
 
 
 
-    // @ElementCollection(targetClass = daysOfWeek.class)
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "recurrence_days_of_week", joinColumns = @JoinColumn(name = "recurrence_id"))
     private List<daysOfWeek> daysOfWeek;
 

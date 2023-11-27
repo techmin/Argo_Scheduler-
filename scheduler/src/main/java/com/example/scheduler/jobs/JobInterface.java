@@ -5,5 +5,4 @@ import org.quartz.JobExecutionContext;
 
 public interface JobInterface extends Job{
     public void execute(JobExecutionContext context);
-    
 }
