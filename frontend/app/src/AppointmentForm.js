@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField, Button, Dialog, DialogTitle, DialogContent, FormControl, InputLabel, Select, MenuItem, Grid } from '@mui/material';
 import dayjs from 'dayjs';
 import { DateCalendar, TimePicker } from '@mui/x-date-pickers';
@@ -10,6 +10,12 @@ import './AppointmentForm.css';
 
 function AppointmentForm({ initialData }) {
   const navigate = useNavigate();
+
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  useEffect(() => {
+    setIsEditMode(initialData != null);
+  }, [initialData]);
 
   const [appointment, setAppointment] = useState(initialData || {
     appTitle: '',
@@ -97,7 +103,7 @@ function AppointmentForm({ initialData }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit}>
         <Dialog open = {true} onClose={() => {}} style={{ width: 'auto', maxWidth: '500px', margin: '0 auto' }}>
-          <DialogTitle>New Appointment</DialogTitle>
+          <DialogTitle>{isEditMode ? "Edit Appointment" : "New Appointment"}</DialogTitle>
           <DialogContent className='dialogContent'>
             <Grid container rowSpacing={2}>
               <Grid item>

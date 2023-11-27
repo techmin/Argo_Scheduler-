@@ -14,6 +14,10 @@ const HomePage = (props) => {
     navigate('/create-appointment');
   };
 
+  const navigateToHomePage = () => {
+    navigate('/home');
+  };
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -31,7 +35,7 @@ const HomePage = (props) => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar component="nav">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography onClick={navigateToHomePage} variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Schedule
           </Typography>
           <Button color="inherit" onClick={navigateToAppointmentForm} sx={{ display: { sm: 'block', xs: 'none' } }}>
