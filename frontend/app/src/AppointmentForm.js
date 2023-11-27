@@ -1,45 +1,64 @@
 import React, { useState } from 'react';
-import { TextField, Button, Dialog, DialogTitle, DialogContent, FormControlLabel, Switch, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { TextField, Button, Dialog, DialogTitle, DialogContent, FormControl, InputLabel, Select, MenuItem, Grid } from '@mui/material';
 import dayjs from 'dayjs';
-import { DatePicker, TimePicker } from '@mui/x-date-pickers';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import { DateCalendar, TimePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { useNavigate } from 'react-router-dom';
+import './AppointmentForm.css';
 
 
-function AppointmentForm() {
-  const [appointment, setAppointment] = useState({
+function AppointmentForm({ initialData }) {
+  const navigate = useNavigate();
+
+  const [appointment, setAppointment] = useState(initialData || {
     appTitle: '',
     startDate: dayjs(),
     endDate: '',
     startTime: dayjs(),
-    endTime: dayjs()
-    // include other fields as necessary
+    endTime: dayjs(),
+    repeat: 'Does not repeat',
+    intervalAmount: 1
   });
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setAppointment({ ...appointment, [name]: value });
-  };
+  // const handleInputChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setAppointment({ ...appointment, [name]: value });
+  // };
 
+  const handleCancel = () => {
+    navigate('/home');
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const formattedStartDate = appointment.startDate.format("YYYY-MM-DD");
       const formattedEndDate = appointment.endDate ? appointment.endDate.format("YYYY-MM-DD") : null;
       const formattedStartTime = appointment.startTime.format("HH:mm:ss");
-      const formattedEndTime = appointment.endDTime ? appointment.endTime.format("HH:mm:ss") : null;
-      
+      const formattedEndTime = appointment.endTime ? appointment.endTime.format("HH:mm:ss") : null;
+
+      // let recurrence = null;
+      let recurrenceData = appointment.repeat !== 'Does not repeat' ? {
+        repeat: appointment.repeat,
+        intervalAmount: appointment.intervalAmount
+      } : null;
+
+      const endpoint = initialData ? `http://localhost:8080/api/appointment/update/${initialData.id}` : 'http://localhost:8080/api/appointment/schedule';
+      const method = initialData ? 'PUT' : 'POST';
+
       const dataToSend = {
-        ...appointment,
-        startTime: formattedStartTime,
-        endTime: formattedEndTime,
-        startDate: formattedStartDate,
-        endDate: formattedEndDate,
+        appointment: {
+          appTitle: appointment.appTitle,
+          startTime: formattedStartTime,
+          endTime: formattedEndTime,
+          startDate: formattedStartDate,
+          endDate: formattedEndDate,
+          recurrence: recurrenceData,
+        }
       }
-      const response = await fetch('http://localhost:8080/api/appointment/schedule', {
-        method: 'POST',
+      // console.log("Data to send:", dataToSend);
+      const response = await fetch(endpoint, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -49,9 +68,10 @@ function AppointmentForm() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      navigate('/home');
       if (response.headers.get('Content-Type').includes('application/json')) {
         const result = await response.json(); // Parse as JSON
-        console.log(result);
+        // console.log(result);
       } else {
         const text = await response.text(); // Read as text
         console.log('Received non-JSON response:', text);
@@ -60,10 +80,12 @@ function AppointmentForm() {
       // Handle success message here
       setAppointment({
         appTitle:'',
-        startDate:'',
-        endDate:'',
-        startTime:'',
-        endTime:''
+        startDate: dayjs(),
+        endDate: '',
+        startTime: dayjs(),
+        endTime: dayjs(),
+        repeat: 'Does not repeat',
+        intervalAmount: 1
       })
     } catch (error) {
       console.error('There was an error!', error);
@@ -74,118 +96,79 @@ function AppointmentForm() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit}>
-        <Dialog open = {true} onClose={() => {} }>
+        <Dialog open = {true} onClose={() => {}} style={{ width: 'auto', maxWidth: '500px', margin: '0 auto' }}>
           <DialogTitle>New Appointment</DialogTitle>
-          <DialogContent>
-            <StaticDatePicker 
-              label="Select date"
-              value={appointment.startDate}
-              onChange={(newDate) => setAppointment({ ...appointment, startDate: newDate})}
-              renderInput={(params) => <TextField {...params} fullWidth />}
-            />
-            <TextField 
-              fullWidth
-              margin='normal'
-              name='appTitle'
-              label='Appointment Title'
-              value={appointment.appTitle}
-              onChange={(e) => setAppointment({ ...appointment, appTitle: e.target.value })}
-              required
-            />
-            <TimePicker 
-              label="Start time"
-              value={appointment.startTime}
-              onChange={(newTime) => setAppointment({...appointment, startTime: newTime })}
-              renderInput={(params) => <TextField {...params} fullWidth />}
-              required
-            />
-
-            <FormControl fullWidth>
-              <InputLabel id="repeat-label">Does not repeat</InputLabel>
-              <Select
-                labelId='repeat-label'
-                value={appointment.repeat}
-                label="Does not repeat"
-                onChange={(e) => setAppointment({...appointment, repeat: e.target.value})}>
-                <MenuItem value="Does not repeat">Does not repeat</MenuItem>
-                <MenuItem value="Daily">Daily</MenuItem>
-                <MenuItem value="Weekly">Weekly</MenuItem>
-                <MenuItem value="Monthly">Monthly</MenuItem>
-                <MenuItem value="Yearly">Yearly</MenuItem>
-              </Select>
-            </FormControl>
-            <Button onClick={handleSubmit} variant='contained' color='primary'>Submit</Button>
-            <Button onClick={() => {}}>Cancel</Button>
+          <DialogContent className='dialogContent'>
+            <Grid container rowSpacing={2}>
+              <Grid item>
+                <DateCalendar 
+                  label="Select date"
+                  value={appointment.startDate}
+                  onChange={(newDate) => setAppointment({ ...appointment, startDate: newDate})}
+                  renderInput={(params) => <TextField {...params} fullWidth />}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  className='textField'
+                  fullWidth
+                  margin='normal'
+                  name='appTitle'
+                  label='Appointment Title'
+                  value={appointment.appTitle}
+                  onChange={(e) => {setAppointment({ ...appointment, appTitle: e.target.value })}}
+                  required
+                />
+              </Grid>
+              <Grid item>
+                <TimePicker 
+                  className='timePicker'
+                  label="Start time"
+                  value={appointment.startTime}
+                  onChange={(newTime) => setAppointment({...appointment, startTime: newTime })}
+                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  required
+                  // style={{marginTop: 20, marginBottom: 20}}
+                />
+                </Grid>
+              <Grid item>
+                <TimePicker
+                  className='timePicker'
+                  label="End time"
+                  value={appointment.endTime}
+                  onChange={(newTime) => setAppointment({...appointment, endTime: newTime })}
+                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  required
+                  // style={{marginTop: 20, marginBottom: 20}}
+                />
+                </Grid>
+                <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel id="repeat-label">Repeat</InputLabel>
+                  <Select
+                    labelId='repeat-label'
+                    value={appointment.repeat}
+                    label="Repeat"
+                    onChange={(e) => {setAppointment({...appointment, repeat: e.target.value});
+                    console.log("Selected recurrence: ", e.target.value);
+                    }}>
+                    <MenuItem value="Does not repeat">Does not repeat</MenuItem>
+                    <MenuItem value="DAILY">Daily</MenuItem>
+                    <MenuItem value="WEEKLY">Weekly</MenuItem>
+                    <MenuItem value="MONTHLY">Monthly</MenuItem>
+                    <MenuItem value="YEARLY">Yearly</MenuItem>
+                  </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item>
+                  <div className='buttonGroup'>
+                    <Button className="buttonSubmit" onClick={handleSubmit} variant='contained' color='primary'>Submit</Button>
+                    <Button className='buttonCancel' onClick={handleCancel}>Cancel</Button>
+                  </div>
+                </Grid>
+            </Grid>  
           </DialogContent>
         </Dialog>
-      
-      {/* <DemoItem label="New Appointment">
-        <StaticDatePicker defaultValue={dayjs('2022-04-17')} />
-      </DemoItem>
-      <input
-        type="text"
-        name="appTitle"
-        value={appointment.appTitle}
-        onChange={handleInputChange}
-        placeholder="Appointment Title"
-        required
-      /> */}
-      {/* <DatePicker 
-        label = "Start Date"
-        value = {appointment.startDate}
-        onChange = {(date) => handleInputChange('startDate', date)}
-        renderInput={(props) => <TextField {...props} required fullWidth />}
-      /> */}
-      {/* <DatePicker 
-        label = "End Date"
-        value = {appointment.endDate}
-        onChange = {(date) => handleInputChange('endDate', date)}
-        renderInput={(props) => <TextField {...props} required fullWidth />}
-      /> */}
-      {/* <TimePicker 
-        label = "Start Time"
-        value = {appointment.startTime}
-        onChange = {(time) => handleInputChange('startTime', time)}
-        renderInput={(props) => <TextField {...props} required fullWidth />}
-      />
-      <TimePicker 
-        label = "End Time"
-        value = {appointment.endTime}
-        onChange = {(time) => handleInputChange('endTime', time)}
-        renderInput={(props) => <TextField {...props} required fullWidth />}
-      /> */}
-
-      {/* <input
-        type="date"
-        name="startDate"
-        value={appointment.startDate}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="date"
-        name="endDate"
-        value={appointment.endDate}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="time"
-        name="startTime"
-        value={appointment.startTime}
-        onChange={handleInputChange}
-        required
-      /> */}
-      {/* <input
-        type="time"
-        name="endTime"
-        value={appointment.endTime}
-        onChange={handleInputChange}
-        required
-      /> */}
-      {/* <button type="submit" variant="contained" color="primary">
-        Schedule Appointment
-      </button> */}
     </form>
     </LocalizationProvider>
     

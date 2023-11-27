@@ -1,0 +1,36 @@
+/* 
+
+.dialogContent {
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: auto;
+    > * {
+        margin: auto 16px;
+    }
+}
+
+.timePicker, .repeatSelect, .buttonGroup {
+    margin-bottom: 20px;
+}
+
+  
+.textField {
+    margin: 10px 0;
+    border-radius: 4px;
+}
+  
+.buttonSubmit {
+    background-color: #1976d2;
+    color: white;
+    &:hover {
+      background-color: darken(#1976d2, 10%);
+    }
+}
+  
+.buttonCancel {
+    background-color: #757575;
+    color: white;
+    &:hover {
+      background-color: darken(#757575, 10%);
+    }
+} */
